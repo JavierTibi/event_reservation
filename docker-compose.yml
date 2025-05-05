@@ -1,0 +1,35 @@
+services:
+    laravel:
+        image: bitnami/laravel
+        container_name: event-api_app
+        depends_on:
+            - db
+        environment:
+            - DB_CONNECTION=mysql
+            - DB_HOST=event-api_db
+            - DB_PORT=3306
+            - DB_DATABASE=events
+            - DB_USERNAME=local
+            - DB_PASSWORD=local
+        ports:
+            - "8084:8000"
+        volumes:
+            - .:/app
+    db:
+        image: mysql:5.7
+        container_name: event-api_db
+        restart: always
+        volumes:
+            - ./db:/var/lib/mysql
+        ports:
+            - "3392:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: events
+            MYSQL_USER: local
+            MYSQL_PASSWORD: local
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 10s
+            timeout: 5s
+            retries: 5

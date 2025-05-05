@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "b5b62f49-9836-41a4-805b-e9cb380ade12",
+		"name": "Event API",
+		"description": "Colección de endpoints para el sistema de reservas de eventos.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5402529"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonResponse = pm.response.json();",
+							"pm.collectionVariables.set(\"auth_token\", jsonResponse.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Demo Event\",\n  \"description\": \"Este es un evento de prueba.\",\n  \"date\": \"2025-05-01T19:53:03\",\n  \"location\": \"Online\",\n  \"price\": 10.0,\n  \"attendee_limit\": 100,\n  \"reservation_deadline\": \"2025-05-01T19:53:03\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/events",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Events",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/events",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reserve Ticket",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/events/1/reserve",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"events",
+						"1",
+						"reserve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Leave Review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excelente evento\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/events/1/review",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"events",
+						"1",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Reviews",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/events/1/reviews",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"events",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8084"
+		},
+		{
+			"key": "auth_token",
+			"value": ""
+		}
+	]
+}
